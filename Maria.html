@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi persona favorita ❤️</title>
+    <style>
+        :root {
+            --accent: #ff4d4d;
+            --verde-obscuro: #2f342f;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: #1a1d1a;
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* Diapositivas de Fondo */
+        #slideshow {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 2.5s ease-in-out;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 2;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: var(--verde-obscuro);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            width: 85%;
+            max-width: 350px;
+            text-align: center;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .foto-portada {
+            width: 100%;
+            height: 350px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            background-image: url('https://scontent.fbla1-1.fna.fbcdn.net/v/t51.82787-15/541960483_18080947612902331_7609948392580983167_n.webp?stp=dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=79T5jGSyfRcQ7kNvwFZLdj_&_nc_oc=Admdzmk5qJrYWUf9wAsIMHTlJLC70DZyQew9C4RPJSY4oD0tbQBbMu7pBwm0C52NJ38&_nc_zt=23&_nc_ht=scontent.fbla1-1.fna&_nc_gid=oIU7-lL416WT6P6lx3F2Qw&oh=00_AftYr7l9-i02S9dZLNZ_9hyrG7HRzQkx8ch6i9ruPwOrxA&oe=69889FEC');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        h2 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            height: 50px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        #si { 
+            background: #fff; 
+            color: var(--verde-obscuro); 
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        #no { background: var(--accent); color: white; position: fixed; z-index: 1000; }
+
+        .heart {
+            position: absolute;
+            background-color: var(--accent);
+            transform: rotate(-45deg);
+            animation: floatUp 4s linear forwards;
+            opacity: 0;
+            z-index: 100;
+        }
+        .heart:before, .heart:after {
+            content: ""; position: absolute; background-color: var(--accent); border-radius: 50%; width: 100%; height: 100%;
+        }
+        .heart:before { top: -50%; left: 0; }
+        .heart:after { top: 0; left: 50%; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0) rotate(-45deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-800px) scale(1.5) rotate(-45deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="musica" loop>
+        <source src="https://files.catbox.moe/ycgr0o.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="slideshow"></div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="foto-portada"></div>
+            <h2 id="titulo">¿QUIERES SER MI SAN VALENTIN Y MI COMPAÑERA DE SERVICIO?</h2>
+            <div class="botones">
+                <button id="si" onclick="aceptar()">SÍ</button>
+                <button id="no" onmouseover="huir()" ontouchstart="huir()">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN FINAL
+        const telefono = "584221110236"; // PON TU NÚMERO REAL AQUÍ
+        const mensajeWhatsApp = "¡SÍ! Hagamos equipo este sábado y siempre. ¡Acepto ser tu San Valentín! ❤️";
+
+        const fotosFondo = [
+            "https://files.catbox.moe/yg30b9.jpeg",
+            "https://files.catbox.moe/x7bs09.jpeg",
+            "https://files.catbox.moe/kf0u43.jpeg",
+            "https://files.catbox.moe/0rnpvl.jpeg",
+            "https://files.catbox.moe/hi8fjv.jpeg",
+            "https://files.catbox.moe/0hch83.jpeg",
+            "https://files.catbox.moe/j2jhuh.jpeg",
+            "https://files.catbox.moe/51ah2l.jpeg",
+            "https://files.catbox.moe/721e2k.jpeg"
+        ];
+
+        const containerSlides = document.getElementById('slideshow');
+
+        fotosFondo.forEach((url, index) => {
+            const div = document.createElement('div');
+            div.className = 'slide';
+            div.style.backgroundImage = `url('${url}')`;
+            if (index === 0) div.style.opacity = 0.5;
+            containerSlides.appendChild(div);
+        });
+
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function nextSlide() {
+            slides[current].style.opacity = 0;
+            current = (current + 1) % slides.length;
+            slides[current].style.opacity = 0.5;
+        }
+
+        setInterval(nextSlide, 4000);
+
+        function huir() {
+            const btn = document.getElementById('no');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+
+        function aceptar() {
+            document.getElementById('musica').play();
+            
+            // MENSAJE ESPECIAL DE EQUIPO
+            document.getElementById('titulo').innerHTML = "¡SÍ! <br> Hagamos equipo este sábado y siempre. <br> ¡Qué privilegio servir a Dios a tu lado! ❤️";
+            document.getElementById('titulo').style.fontSize = "1rem";
+            
+            document.getElementById('no').style.display = "none";
+            document.getElementById('si').style.display = "none";
+
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    const size = Math.random() * 15 + 10 + 'px';
+                    heart.style.width = size; heart.style.height = size;
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.bottom = '-20px';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensajeWhatsApp)}`;
+                window.open(urlWhatsApp, '_blank');
+            }, 3500);
+        }
+
+        window.onload = () => {
+            const btnNo = document.getElementById('no');
+            btnNo.style.left = "55%";
+            btnNo.style.top = "82%";
+        };
+    </script>
+</body>
+</html>
