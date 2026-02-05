@@ -2,244 +2,156 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi persona favorita ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Maru ❤️</title>
     <style>
-        :root {
-            --accent: #ff4d4d;
-            --verde-obscuro: #2f342f;
-        }
+        :root { --accent: #ff4d4d; --verde: #2f342f; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Poppins', sans-serif; }
+        
+        /* Slideshow con Fade suave */
+        #slideshow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .slide { position: absolute; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 2.5s ease-in-out; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 2; }
 
-        body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            overflow: hidden;
-            background-color: #1a1d1a;
-            font-family: 'Times New Roman', serif;
-        }
+        .container { position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 10px; }
 
-        /* Diapositivas de Fondo */
-        #slideshow {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 1;
-        }
+        /* Texto superior */
+        .intro-text { color: white; font-size: 0.85rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; opacity: 0.9; font-weight: 300; }
 
-        .slide {
-            position: absolute;
-            width: 100%; height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 2.5s ease-in-out;
-        }
+        /* Conteo con Números GRANDES */
+        .countdown-container { display: flex; gap: 8px; margin-bottom: 22px; }
+        .time-box { background: rgba(255,255,255,0.12); backdrop-filter: blur(15px); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); min-width: 62px; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+        .time-num { display: block; color: white; font-size: 1.7rem; font-weight: 700; line-height: 1; margin-bottom: 3px; }
+        .time-label { color: rgba(255,255,255,0.7); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 2;
-        }
+        /* Tarjeta compacta */
+        .card { background: rgba(47, 52, 47, 0.94); padding: 22px; border-radius: 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); width: 82%; max-width: 285px; border: 1px solid rgba(255,255,255,0.1); }
+        .foto-tarjeta { width: 100%; height: 215px; border-radius: 20px; background-image: url('https://scontent.fbla1-1.fna.fbcdn.net/v/t51.82787-15/541960483_18080947612902331_7609948392580983167_n.webp?stp=dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=79T5jGSyfRcQ7kNvwFZLdj_&_nc_oc=Admdzmk5qJrYWUf9wAsIMHTlJLC70DZyQew9C4RPJSY4oD0tbQBbMu7pBwm0C52NJ38&_nc_zt=23&_nc_ht=scontent.fbla1-1.fna&_nc_gid=oIU7-lL416WT6P6lx3F2Qw&oh=00_AftYr7l9-i02S9dZLNZ_9hyrG7HRzQkx8ch6i9ruPwOrxA&oe=69889FEC'); background-size: cover; background-position: center; margin-bottom: 18px; }
+        
+        h2 { color: white; font-size: 1rem; margin-bottom: 22px; font-weight: 400; line-height: 1.3; }
 
-        .container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+        .botones-wrap { position: relative; height: 50px; width: 100%; display: flex; justify-content: center; gap: 15px; }
+        
+        button { padding: 12px 24px; border: none; border-radius: 50px; font-weight: bold; font-family: 'Poppins', sans-serif; cursor: pointer; font-size: 0.85rem; }
+        
+        #si { background: white; color: var(--verde); z-index: 10; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        #si::after { content: ''; position: absolute; top: -50%; left: -100%; width: 100%; height: 200%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transform: rotate(20deg); animation: shine 3s infinite; }
+        @keyframes shine { 100% { left: 200%; } }
 
-        .card {
-            background: var(--verde-obscuro);
-            padding: 25px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            width: 85%;
-            max-width: 350px;
-            text-align: center;
-            animation: fadeIn 1.2s ease-out;
-        }
+        #no { background: var(--accent); color: white; z-index: 100; position: fixed; transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .foto-portada {
-            width: 100%;
-            height: 350px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            background-image: url('https://scontent.fbla1-1.fna.fbcdn.net/v/t51.82787-15/541960483_18080947612902331_7609948392580983167_n.webp?stp=dst-jpg_tt6&_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_ohc=79T5jGSyfRcQ7kNvwFZLdj_&_nc_oc=Admdzmk5qJrYWUf9wAsIMHTlJLC70DZyQew9C4RPJSY4oD0tbQBbMu7pBwm0C52NJ38&_nc_zt=23&_nc_ht=scontent.fbla1-1.fna&_nc_gid=oIU7-lL416WT6P6lx3F2Qw&oh=00_AftYr7l9-i02S9dZLNZ_9hyrG7HRzQkx8ch6i9ruPwOrxA&oe=69889FEC');
-            background-size: cover;
-            background-position: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        h2 {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        .botones {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            height: 50px;
-        }
-
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        #si { 
-            background: #fff; 
-            color: var(--verde-obscuro); 
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        #no { background: var(--accent); color: white; position: fixed; z-index: 1000; }
-
-        .heart {
-            position: absolute;
-            background-color: var(--accent);
-            transform: rotate(-45deg);
-            animation: floatUp 4s linear forwards;
-            opacity: 0;
-            z-index: 100;
-        }
-        .heart:before, .heart:after {
-            content: ""; position: absolute; background-color: var(--accent); border-radius: 50%; width: 100%; height: 100%;
-        }
-        .heart:before { top: -50%; left: 0; }
-        .heart:after { top: 0; left: 50%; }
-
-        @keyframes floatUp {
-            0% { transform: translateY(0) scale(0) rotate(-45deg); opacity: 0; }
-            20% { opacity: 0.8; }
-            100% { transform: translateY(-800px) scale(1.5) rotate(-45deg); opacity: 0; }
-        }
+        .particle { position: absolute; pointer-events: none; animation: floatUp 2s forwards; font-size: 1.5rem; z-index: 1000; }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-300px); opacity: 0; } }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body onclick="crearParticula(event)">
 
-    <audio id="musica" loop>
-        <source src="https://files.catbox.moe/ycgr0o.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="musica" loop><source src="https://files.catbox.moe/ycgr0o.mp3" type="audio/mpeg"></audio>
 
     <div id="slideshow"></div>
     <div class="overlay"></div>
 
     <div class="container">
+        <div class="intro-text">Solo falta</div>
+        <div class="countdown-container">
+            <div class="time-box"><span class="time-num" id="days">00</span><span class="time-label">Días</span></div>
+            <div class="time-box"><span class="time-num" id="hours">00</span><span class="time-label">Hrs</span></div>
+            <div class="time-box"><span class="time-num" id="mins">00</span><span class="time-label">Min</span></div>
+            <div class="time-box" style="border-color: var(--accent);"><span class="time-num" id="secs" style="color: var(--accent);">00</span><span class="time-label">Seg</span></div>
+        </div>
+
         <div class="card">
-            <div class="foto-portada"></div>
-            <h2 id="titulo">¿QUIERES SER MI SAN VALENTIN Y MI COMPAÑERA DE SERVICIO?</h2>
-            <div class="botones">
-                <button id="si" onclick="aceptar()">SÍ</button>
-                <button id="no" onmouseover="huir()" ontouchstart="huir()">NO</button>
+            <div class="foto-tarjeta"></div>
+            <h2 id="titulo">¿QUIERES SER MI <br> SAN VALENTÍN?</h2>
+            <div class="botones-wrap">
+                <button id="si" onclick="aceptar()">SÍ, ACEPTO</button>
+                <button id="no" onmouseover="huir()" onclick="huir()" ontouchstart="huir()">NO</button>
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN FINAL
-        const telefono = "584221110236"; // PON TU NÚMERO REAL AQUÍ
-        const mensajeWhatsApp = "¡SÍ! Hagamos equipo este sábado y siempre. ¡Acepto ser tu San Valentín! ❤️";
-
+        const telefono = "584221110236"; // TU NÚMERO DE WHATSAPP
+        const linkFotoMensaje = "https://files.catbox.moe/0uncie.jpg"; // NUEVO LINK ACTUALIZADO
         const fotosFondo = [
-            "https://files.catbox.moe/yg30b9.jpeg",
-            "https://files.catbox.moe/x7bs09.jpeg",
-            "https://files.catbox.moe/kf0u43.jpeg",
-            "https://files.catbox.moe/0rnpvl.jpeg",
-            "https://files.catbox.moe/hi8fjv.jpeg",
-            "https://files.catbox.moe/0hch83.jpeg",
-            "https://files.catbox.moe/j2jhuh.jpeg",
-            "https://files.catbox.moe/51ah2l.jpeg",
-            "https://files.catbox.moe/721e2k.jpeg"
+            linkFotoMensaje, 
+            "https://files.catbox.moe/0vkss2.PNG",
+            "https://files.catbox.moe/yg30b9.jpeg", 
+            "https://files.catbox.moe/x7bs09.jpeg"
         ];
 
-        const containerSlides = document.getElementById('slideshow');
-
-        fotosFondo.forEach((url, index) => {
-            const div = document.createElement('div');
-            div.className = 'slide';
-            div.style.backgroundImage = `url('${url}')`;
-            if (index === 0) div.style.opacity = 0.5;
-            containerSlides.appendChild(div);
-        });
-
-        let current = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function nextSlide() {
-            slides[current].style.opacity = 0;
-            current = (current + 1) % slides.length;
-            slides[current].style.opacity = 0.5;
+        function setInitialNo() {
+            const si = document.getElementById('si');
+            const no = document.getElementById('no');
+            const rect = si.getBoundingClientRect();
+            no.style.left = (rect.right + 15) + "px";
+            no.style.top = rect.top + "px";
         }
-
-        setInterval(nextSlide, 4000);
+        window.onload = setInitialNo;
 
         function huir() {
             const btn = document.getElementById('no');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            const p = 50;
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - (p*2)) + p;
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - (p*2)) + p;
             btn.style.left = x + "px";
             btn.style.top = y + "px";
         }
 
-        function aceptar() {
-            document.getElementById('musica').play();
-            
-            // MENSAJE ESPECIAL DE EQUIPO
-            document.getElementById('titulo').innerHTML = "¡SÍ! <br> Hagamos equipo este sábado y siempre. <br> ¡Qué privilegio servir a Dios a tu lado! ❤️";
-            document.getElementById('titulo').style.fontSize = "1rem";
-            
-            document.getElementById('no').style.display = "none";
-            document.getElementById('si').style.display = "none";
+        const ss = document.getElementById('slideshow');
+        fotosFondo.forEach((u, i) => {
+            const d = document.createElement('div');
+            d.className = 'slide'; d.style.backgroundImage = `url('${u}')`;
+            if(i === 0) d.style.opacity = 0.5;
+            ss.appendChild(d);
+        });
+        
+        let cur = 0;
+        const s = document.getElementsByClassName('slide');
+        setInterval(() => {
+            s[cur].style.opacity = 0;
+            cur = (cur + 1) % s.length;
+            s[cur].style.opacity = 0.5;
+        }, 4500);
 
-            for (let i = 0; i < 60; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart';
-                    const size = Math.random() * 15 + 10 + 'px';
-                    heart.style.width = size; heart.style.height = size;
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.bottom = '-20px';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 4000);
-                }, i * 100);
-            }
+        const meta = new Date('February 14, 2026 00:00:00').getTime();
+        setInterval(() => {
+            const d = meta - new Date().getTime();
+            if(d < 0) return;
+            document.getElementById('days').innerText = Math.floor(d / 86400000);
+            document.getElementById('hours').innerText = Math.floor((d % 86400000) / 3600000);
+            document.getElementById('mins').innerText = Math.floor((d % 3600000) / 60000);
+            document.getElementById('secs').innerText = Math.floor((d % 60000) / 1000);
+        }, 1000);
 
-            setTimeout(() => {
-                const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensajeWhatsApp)}`;
-                window.open(urlWhatsApp, '_blank');
-            }, 3500);
+        function crearParticula(e) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerHTML = ['❤️','✨','📖'][Math.floor(Math.random()*3)];
+            p.style.left = (e.clientX || window.innerWidth/2) + 'px';
+            p.style.top = (e.clientY || window.innerHeight/2) + 'px';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 2000);
         }
 
-        window.onload = () => {
-            const btnNo = document.getElementById('no');
-            btnNo.style.left = "55%";
-            btnNo.style.top = "82%";
-        };
+        function aceptar() {
+            const a = document.getElementById('musica');
+            a.volume = 0; a.play().catch(() => {});
+            let v = 0;
+            const i = setInterval(() => { if(v<0.8){v+=0.05; a.volume=v;} else clearInterval(i); }, 200);
+
+            document.getElementById('titulo').innerHTML = "¡SÍ! ❤️<br><span style='font-size:0.8rem'>Hagamos equipo para Dios este sábado.</span>";
+            document.getElementById('no').style.display = 'none';
+            document.getElementById('si').style.display = 'none';
+            
+            for(let j=0; j<40; j++) setTimeout(() => crearParticula({clientX: Math.random()*window.innerWidth, clientY: window.innerHeight}), j*100);
+
+            setTimeout(() => {
+                const m = `¡SÍ! Acepto ser tu San Valentín. ❤️ Mira nuestro recuerdo aquí: ${linkFotoMensaje}`;
+                window.open(`https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(m)}`, '_blank');
+            }, 3000);
+        }
     </script>
 </body>
 </html>
